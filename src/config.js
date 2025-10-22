@@ -1,7 +1,7 @@
 // Aqui puedes cambiar la configuración del banner
 window.ConsentBannerConfig = {
     text: "We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.",
-    image: "./img/icono_100.png", // Ruta de la imagen del banner, se mostrara a 50px pero se recomienda colocar de 100-200px
+    image: "./img/cookie_100.png", // Ruta de la imagen del banner, se mostrara a 50px pero se recomienda colocar de 100-200px
     
     colors: {
         // Banner
