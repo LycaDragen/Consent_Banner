@@ -1,0 +1,195 @@
+/* Variables CSS personalizables */
+:root {
+  --banner-bg: #f8f9fa;
+  --banner-text: #000000;
+  --button-primary-bg: #28a745;
+  --button-primary-text: #ffffff;
+  --button-secondary-bg: #f2f2f2;
+  --button-secondary-text: #000000;
+  --button-primary-hover-bg: #218838;
+  --button-primary-hover-text: #ffffff;
+  --button-secondary-hover-bg: #e0e0e0;
+  --button-secondary-hover-text: #000000;
+  --switch-on-bg: #28a745;
+  --switch-off-bg: #cccccc;
+  --close-btn-bg: #f2f2f2;
+  --close-btn-text: #000000;
+  --close-btn-hover-bg: #e0e0e0;
+  --close-btn-hover-text: #000000;
+  --icon-bg: #28a745;
+  --banner-font-size: 16px;
+  --option-font-size: 15px;
+  --button-font-size: 14px;
+}
+
+/* Fondo borroso */
+#consentOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  background: rgba(0,0,0,0.2);
+  z-index: 9998;
+  display: none;
+}
+
+/* Banner */
+#consentBanner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: var(--banner-bg);
+  color: var(--banner-text);
+  border: 1px solid #ccc;
+  padding: 25px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  font-family: Arial, sans-serif;
+  font-size: var(--banner-font-size);
+  z-index: 9999;
+  border-radius: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+#consentBanner button#closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--close-btn-bg);
+  color: var(--close-btn-text);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
+
+#consentBanner button#closeBtn:hover {
+  background: var(--close-btn-hover-bg);
+  color: var(--close-btn-hover-text);
+}
+
+#consentBanner p {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: var(--banner-font-size);
+}
+
+.consentOption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: var(--option-font-size);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--switch-off-bg);
+  border-radius: 20px;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: var(--switch-on-bg);
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* Acciones del banner */
+#bannerActions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+#bannerActions button {
+  padding: 10px 20px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  font-size: var(--button-font-size);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#bannerActions button:nth-child(1),
+#bannerActions button:nth-child(2) {
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+}
+
+#bannerActions button:nth-child(1):hover,
+#bannerActions button:nth-child(2):hover {
+  background-color: var(--button-secondary-hover-bg);
+  color: var(--button-secondary-hover-text);
+}
+
+#bannerActions button:last-child {
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+
+#bannerActions button:last-child:hover {
+  background-color: var(--button-primary-hover-bg);
+  color: var(--button-primary-hover-text);
+}
+
+/* Icono Minimizado */
+#minimizedIcon {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--icon-bg);
+  cursor: pointer;
+  display: none;
+  z-index: 10000;
+}
+
+#minimizedIcon img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
