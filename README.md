@@ -7,11 +7,12 @@ Un banner de consentimiento de cookies completamente personalizable que permite 
 ## 🚀 Características Principales
 
 - ✅ **Popup de consentimiento** con opciones granulares
+- ✅ **Overlay con efecto blur** para mejor enfoque visual
 - ✅ **Personalización completa** de colores, fuentes y efectos
 - ✅ **Efectos hover** en botones y elementos interactivos
 - ✅ **Switches personalizables** para cada tipo de cookie
 - ✅ **Icono minimizado** para reabrir el banner
-- ✅ **Persistencia** de preferencias en localStorage
+- ✅ **Persistencia** de preferencias en localStorage (clave: `"userPreferences"`)
 - ✅ **Integración GTM** automática con dataLayer
 - ✅ **Configuración sencilla** desde un solo archivo
 - ✅ **Responsive** y compatible con todos los navegadores
@@ -31,7 +32,7 @@ consent-banner-demo/
 │ └─ config.js            # Configuración personalizable del banner
 │
 ├─ img/
-│ └─ icono_100.png        # Icono por defecto del banner
+│ └─ cookie_100.png      # Icono por defecto del banner
 │
 ├─ index.html             # Página de demostración
 └─ README.md
@@ -95,7 +96,7 @@ window.ConsentBannerConfig = {
 
 ## ⚙️ Configuración Avanzada
 
-El archivo `src/config.js` permite personalizar completamente el banner:
+El archivo `src/config.js` permite personalizar completamente el banner. Si no se especifica una configuración personalizada, se usarán los valores por defecto:
 
 ### 🎨 Colores Personalizables
 ```javascript
@@ -110,17 +111,21 @@ colors: {
     buttonSecondaryBg: "#f2f2f2", // Botones "Deny All" y "Allow Selection"
     buttonSecondaryText: "#000000",
     
-    // Efectos hover
-    buttonHoverBg: "#218838",      // Hover en "Allow All"
-    buttonSecondaryHoverBg: "#e0e0e0", // Hover en botones secundarios
+    // Hover (efectos al pasar el mouse)
+    buttonHoverBg: "#218838", // Color de hover para el botón "Allow All"
+    buttonHoverText: "#ffffff", // Color del texto en hover para "Allow All"
+    buttonSecondaryHoverBg: "#e0e0e0", // Color de hover para botones secundarios
+    buttonSecondaryHoverText: "#000000", // Color del texto en hover para botones secundarios
     
     // Switches
     switchOnBg: "#28a745",         // Switch activado
     switchOffBg: "#cccccc",        // Switch desactivado
     
-    // Botón de cierre
-    closeBtnBg: "#f2f2f2",        // Botón X
-    closeBtnHoverBg: "#e0e0e0",   // Hover del botón X
+    // Botón de cierre (X)
+    closeBtnBg: "#f2f2f2", // Color de fondo del botón de cierre
+    closeBtnColor: "#000000", // Color del texto del botón de cierre
+    closeBtnHoverBg: "#e0e0e0", // Color de fondo en hover del botón de cierre
+    closeBtnHoverColor: "#000000", // Color del texto en hover del botón de cierre
     
     // Icono minimizado
     iconBg: "#28a745"              // Fondo del icono
@@ -136,7 +141,12 @@ fontSizes: {
 }
 ```
 
-### 🎯 Opciones de Posicionamiento
+### 🖼️ Configuración de Imagen
+```javascript
+image: "./img/cookie_100.png"  // Ruta de la imagen del banner (se muestra a 50px)
+```
+
+### 🎯 Opciones de Posicionamiento del Icono Minimizado
 ```javascript
 iconPosition: "left",        // "left" o "right"
 showMinimizedIcon: true      // true o false
@@ -158,7 +168,7 @@ showMinimizedIcon: true      // true o false
 - **Allow All** - Acepta todas las cookies
 
 ### Integración con Google Tag Manager
-El banner envía automáticamente eventos al dataLayer:
+El banner envía automáticamente eventos al dataLayer y se actualiza en tiempo real cuando el usuario cambia las preferencias:
 
 ```javascript
 window.dataLayer.push({
@@ -208,8 +218,16 @@ El banner usa variables CSS que se pueden personalizar:
     --button-primary-text: #ffffff;
     --button-secondary-bg: #f2f2f2;
     --button-secondary-text: #000000;
+    --button-primary-hover-bg: #218838;
+    --button-primary-hover-text: #ffffff;
+    --button-secondary-hover-bg: #e0e0e0;
+    --button-secondary-hover-text: #000000;
     --switch-on-bg: #28a745;
     --switch-off-bg: #cccccc;
+    --close-btn-bg: #f2f2f2;
+    --close-btn-text: #000000;
+    --close-btn-hover-bg: #e0e0e0;
+    --close-btn-hover-text: #000000;
     --icon-bg: #28a745;
     --banner-font-size: 16px;
     --option-font-size: 15px;
