@@ -193,3 +193,185 @@ input:checked + .slider:before {
   height: 100%;
   border-radius: 50%;
 }
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 768px) {
+  #consentBanner {
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+  }
+  
+  #bannerActions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  #bannerActions button {
+    width: 100%;
+    padding: 12px 20px;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  #consentBanner {
+    width: 95%;
+    padding: 15px;
+    padding-top: 40px;
+    margin: 10px;
+  }
+  
+  #consentBanner p {
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+  
+  .consentOption {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  
+  #bannerActions button {
+    font-size: 13px;
+    padding: 10px 15px;
+  }
+  
+  #consentBanner button#closeBtn {
+    width: 25px;
+    height: 25px;
+    font-size: 16px;
+    top: 12px;
+  }
+  
+  #minimizedIcon {
+    width: 40px;
+    height: 40px;
+    bottom: 15px;
+    left: 15px;
+  }
+}
+
+/* Móviles medianos - pantallas problemáticas */
+@media (max-width: 460px) {
+  #consentBanner {
+    width: 92%;
+    max-width: 350px;
+    padding: 12px;
+    padding-top: 45px;
+    margin: 8px auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  #consentBanner p {
+    font-size: 13px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+  
+  .consentOption {
+    font-size: 12px;
+    margin-bottom: 10px;
+    padding: 2px 0;
+  }
+  
+  #bannerActions {
+    gap: 8px;
+    margin-top: 15px;
+  }
+  
+  #bannerActions button {
+    font-size: 12px;
+    padding: 8px 12px;
+    min-height: 36px;
+  }
+  
+  #consentBanner button#closeBtn {
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    top: 8px;
+    right: 8px;
+  }
+  
+  .switch {
+    width: 36px;
+    height: 19px;
+  }
+  
+  .slider:before {
+    height: 15px;
+    width: 15px;
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(17px);
+  }
+}
+
+/* Móviles muy pequeños */
+@media (max-width: 360px) {
+  #consentBanner {
+    width: 94%;
+    max-width: 300px;
+    padding: 10px;
+    padding-top: 50px;
+    margin: 5px auto;
+    max-height: 85vh;
+  }
+  
+  #consentBanner p {
+    font-size: 12px;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  
+  .consentOption {
+    font-size: 11px;
+    margin-bottom: 8px;
+    padding: 1px 0;
+  }
+  
+  #bannerActions {
+    gap: 6px;
+    margin-top: 12px;
+  }
+  
+  #bannerActions button {
+    font-size: 11px;
+    padding: 6px 10px;
+    min-height: 32px;
+  }
+  
+  #consentBanner button#closeBtn {
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+    top: 6px;
+    right: 6px;
+  }
+  
+  .switch {
+    width: 32px;
+    height: 17px;
+  }
+  
+  .slider:before {
+    height: 13px;
+    width: 13px;
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(15px);
+  }
+  
+  #minimizedIcon {
+    width: 35px;
+    height: 35px;
+    bottom: 10px;
+    left: 10px;
+  }
+}

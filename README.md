@@ -98,6 +98,16 @@ window.ConsentBannerConfig = {
 
 El archivo `src/config.js` permite personalizar completamente el banner. Si no se especifica una configuración personalizada, se usarán los valores por defecto:
 
+### 📋 Valores por Defecto
+```javascript
+{
+    text: "We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.",
+    image: "./img/cookie_100.png",
+    iconPosition: "left",
+    showMinimizedIcon: true
+}
+```
+
 ### 🎨 Colores Personalizables
 ```javascript
 colors: {
@@ -258,6 +268,25 @@ if (window.WPConsentBannerLoaded) {
 - ✅ Dispositivos móviles y tablets
 - ✅ Navegadores con soporte para CSS Variables
 - ✅ Compatible con frameworks (React, Vue, Angular)
+
+### 📐 Breakpoints Responsive
+El banner se adapta automáticamente a diferentes tamaños de pantalla:
+
+- **≤768px**: Tablets y pantallas medianas
+  - Botones apilados verticalmente
+  - Ancho: 90% con máximo 400px
+  
+- **≤480px**: Móviles estándar
+  - Padding superior aumentado (40px)
+  - Botón de cierre reposicionado
+  
+- **≤460px**: Móviles medianos
+  - Padding superior: 45px
+  - Centrado automático con márgenes equilibrados
+  
+- **≤360px**: Móviles muy pequeños
+  - Padding superior: 50px
+  - Elementos optimizados para pantallas estrechas
 
 ---
 

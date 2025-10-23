@@ -3,7 +3,7 @@
   // --- Configuración por defecto ---
   const consentConfig = {
     text: "We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.",
-    image: "./images/placeholder.png",
+    image: "./img/cookie_100.png",
     colors: {
       // Banner
       bannerBg: "#f8f9fa",
