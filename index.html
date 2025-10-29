@@ -1,14 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Consent Banner Demo</title>
+  <title>Demo del Banner de Consentimiento</title>
   <link rel="stylesheet" href="dist/consent-banner.css">
+  
+  <!-- Configurar el modo de consentimiento de Google por defecto (ANTES de que cargue GTM) -->
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  
+  // Establecer el estado de consentimiento por defecto como denegado (excepto las cookies necesarias que siempre se otorgan)
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'analytics_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'functionality_storage': 'granted',  // Necesarias - siempre otorgadas
+    'personalization_storage': 'denied',
+    'security_storage': 'granted',         // Necesarias - siempre otorgadas
+    'wait_for_update': 500
+  });
+  </script>
+  
+  <!-- Google Tag Manager -->
+  <!-- Fin Google Tag Manager -->
 </head>
 <body>
-<h1>Consent Banner Demo</h1>
+  <!-- Google Tag Manager (noscript) -->
+  <!-- Fin Google Tag Manager (noscript) -->
+<h1>Demo del Banner de Consentimiento</h1>
 <p>Este es un ejemplo de cómo funciona el banner de consentimiento. El banner se generará automáticamente cuando cargue la página.</p>
+
+<div style="margin-top: 30px; padding: 20px; border: 2px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+  <p style="margin-bottom: 15px;">Este es un botón que requiere que se habiliten Estadísticas y Marketing para que GTM pueda rastrear el comportamiento</p>
+  <button id="statistics-marketing-button" style="padding: 12px 24px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold;">
+    Hacer Clic Aquí
+  </button>
+</div>
+
 <script src="src/config.js"></script>
 <script src="dist/consent-banner.js"></script>
 </body>

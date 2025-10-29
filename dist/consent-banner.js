@@ -44,15 +44,32 @@
     
     // Posición e ícono
     iconPosition: "left",
-    showMinimizedIcon: true
+    showMinimizedIcon: true,
+    
+    // Textos personalizables de categorías
+    labels: {
+      necessary: "Necessary",
+      preferences: "Preferences",
+      statistics: "Statistics",
+      marketing: "Marketing"
+    },
+    
+    // Textos personalizables de botones
+    buttonTexts: {
+      denyAll: "Deny All",
+      allowSelection: "Allow Selection",
+      allowAll: "Allow All"
+    }
   };
 
   // merge shallow: window.ConsentBannerConfig may override keys
   const defaultConfig = window.ConsentBannerConfig || {};
   const config = Object.assign({}, consentConfig, defaultConfig);
-  // merge nested objects (colors, fontSizes)
+  // merge nested objects (colors, fontSizes, labels, buttonTexts)
   config.colors = Object.assign({}, consentConfig.colors, (defaultConfig.colors || {}));
   config.fontSizes = Object.assign({}, consentConfig.fontSizes, (defaultConfig.fontSizes || {}));
+  config.labels = Object.assign({}, consentConfig.labels, (defaultConfig.labels || {}));
+  config.buttonTexts = Object.assign({}, consentConfig.buttonTexts, (defaultConfig.buttonTexts || {}));
 
   const style = document.createElement("link");
   style.rel = "stylesheet";
@@ -66,7 +83,7 @@
       <p id="consentText">${config.text}</p>
 
       <div class="consentOption">
-        <span>Necessary</span>
+        <span>${config.labels.necessary}</span>
         <label class="switch">
           <input type="checkbox" id="necessaryCheckbox" checked disabled>
           <span class="slider round"></span>
@@ -74,7 +91,7 @@
       </div>
 
       <div class="consentOption">
-        <span>Preferences</span>
+        <span>${config.labels.preferences}</span>
         <label class="switch">
           <input type="checkbox" id="preferencesCheckbox">
           <span class="slider round"></span>
@@ -82,7 +99,7 @@
       </div>
 
       <div class="consentOption">
-        <span>Statistics</span>
+        <span>${config.labels.statistics}</span>
         <label class="switch">
           <input type="checkbox" id="statisticsCheckbox">
           <span class="slider round"></span>
@@ -90,7 +107,7 @@
       </div>
 
       <div class="consentOption">
-        <span>Marketing</span>
+        <span>${config.labels.marketing}</span>
         <label class="switch">
           <input type="checkbox" id="marketingCheckbox">
           <span class="slider round"></span>
@@ -98,9 +115,9 @@
       </div>
 
       <div id="bannerActions">
-        <button id="denyAllBtn">Deny All</button>
-        <button id="allowSelectionBtn">Allow Selection</button>
-        <button id="allowAllBtn">Allow All</button>
+        <button id="denyAllBtn">${config.buttonTexts.denyAll}</button>
+        <button id="allowSelectionBtn">${config.buttonTexts.allowSelection}</button>
+        <button id="allowAllBtn">${config.buttonTexts.allowAll}</button>
       </div>
     </div>
 
@@ -124,21 +141,28 @@
   const marketingCheckbox = document.getElementById("marketingCheckbox");
 
   // --- integración con GTM ---
+  // This function updates consent when user makes choices
   function updateConsentToGTM() {
+    // Get current checkbox states
+    const prefsChecked = preferencesCheckbox ? preferencesCheckbox.checked : false;
+    const statsChecked = statisticsCheckbox ? statisticsCheckbox.checked : false;
+    const marketingChecked = marketingCheckbox ? marketingCheckbox.checked : false;
+    
+    // Build consent object based on checkbox states
+    // Necessary cookies (security_storage and functionality_storage) are always granted
     const consents = {
-      functionality_storage: preferencesCheckbox.checked ? "granted" : "denied",
-      personalization_storage: (preferencesCheckbox.checked || marketingCheckbox.checked) ? "granted" : "denied",
-      analytics_storage: statisticsCheckbox.checked ? "granted" : "denied",
-      ad_storage: marketingCheckbox.checked ? "granted" : "denied",
-      ad_personalization: marketingCheckbox.checked ? "granted" : "denied",
-      ad_user_data: marketingCheckbox.checked ? "granted" : "denied",
-      security_storage: marketingCheckbox.checked ? "granted" : "denied",
+      functionality_storage: "granted",  // Always granted (Necessary)
+      security_storage: "granted",        // Always granted (Necessary)
+      personalization_storage: prefsChecked ? "granted" : "denied",  // Only Preferences controls this
+      analytics_storage: statsChecked ? "granted" : "denied",         // Only Statistics controls this
+      ad_storage: marketingChecked ? "granted" : "denied",           // Only Marketing controls this
+      ad_personalization: marketingChecked ? "granted" : "denied",   // Only Marketing controls this
+      ad_user_data: marketingChecked ? "granted" : "denied",         // Only Marketing controls this
     };
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: "gtm_consent_update",
-      consents: consents
-    });
+    
+    // Send consent update command using gtag
+    // This automatically triggers the "Consent Update" event in GTM
+    gtag('consent', 'update', consents);
   }
 
   // --- apply config to CSS variables and inline values ---
@@ -260,15 +284,39 @@
   }
 
   // --- Eventos ---
-  closeBtn.addEventListener("click", closeBanner);
-  minimizedIcon.addEventListener("click", showBanner);
-  denyAllBtn.addEventListener("click", denyAll);
-  allowSelectionBtn.addEventListener("click", allowSelection);
-  allowAllBtn.addEventListener("click", allowAll);
+  // Add event listeners with null checks
+  if (closeBtn) closeBtn.addEventListener("click", closeBanner);
+  if (minimizedIcon) minimizedIcon.addEventListener("click", showBanner);
+  if (denyAllBtn) denyAllBtn.addEventListener("click", denyAll);
+  if (allowSelectionBtn) allowSelectionBtn.addEventListener("click", allowSelection);
+  if (allowAllBtn) allowAllBtn.addEventListener("click", allowAll);
 
-  preferencesCheckbox.addEventListener("change", updateConsentToGTM);
-  statisticsCheckbox.addEventListener("change", updateConsentToGTM);
-  marketingCheckbox.addEventListener("change", updateConsentToGTM);
+  if (preferencesCheckbox) preferencesCheckbox.addEventListener("change", updateConsentToGTM);
+  if (statisticsCheckbox) statisticsCheckbox.addEventListener("change", updateConsentToGTM);
+  if (marketingCheckbox) marketingCheckbox.addEventListener("change", updateConsentToGTM);
+
+  // --- Statistics/Marketing button tracking ---
+  const statsMarketingBtn = document.getElementById("statistics-marketing-button");
+  if (statsMarketingBtn) {
+    statsMarketingBtn.addEventListener("click", function() {
+      // Only track if both Statistics and Marketing are enabled
+      const statsEnabled = statisticsCheckbox ? statisticsCheckbox.checked : false;
+      const marketingEnabled = marketingCheckbox ? marketingCheckbox.checked : false;
+      
+      if (statsEnabled && marketingEnabled) {
+        // Send GTM event with tracking
+        gtag('event', 'statistics_marketing_button_click', {
+          'event_category': 'engagement',
+          'event_label': 'Statistics Marketing Button',
+          'value': 1
+        });
+        console.log('Statistics and Marketing tracking enabled - button click tracked');
+      } else {
+        console.log('Statistics and Marketing not enabled - click not tracked');
+        alert('Please enable Statistics and Marketing cookies to track this button click.');
+      }
+    });
+  }
 
   // --- Inicializar ---
   document.addEventListener("DOMContentLoaded", () => {

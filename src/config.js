@@ -43,5 +43,20 @@ window.ConsentBannerConfig = {
     
     // Posición e ícono
     iconPosition: "left", // Posición del icono minimizado: "left" o "right"
-    showMinimizedIcon: true // Muestra u oculta el icono minimizado: true o false
+    showMinimizedIcon: true, // Muestra u oculta el icono minimizado: true o false
+    
+    // Textos personalizables de categorías
+    labels: {
+        necessary: "Necessary",    // Etiqueta para cookies necesarias
+        preferences: "Preferences", // Etiqueta para cookies de preferencias
+        statistics: "Statistics",   // Etiqueta para cookies de estadísticas
+        marketing: "Marketing"      // Etiqueta para cookies de marketing
+    },
+    
+    // Textos personalizables de botones
+    buttonTexts: {
+        denyAll: "Deny All",           // Texto del botón rechazar todo
+        allowSelection: "Allow Selection", // Texto del botón permitir selección
+        allowAll: "Allow All"          // Texto del botón permitir todo
+    }
 };

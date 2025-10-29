@@ -63,18 +63,41 @@ Descarga los archivos y cópialos a tu proyecto.
 <head>
     <!-- 1. Incluir CSS -->
     <link rel="stylesheet" href="dist/consent-banner.css">
+    
+    <!-- 2. Configurar Consent Mode por defecto (ANTES de GTM) -->
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    
+    // Establecer el estado de consentimiento por defecto como denegado (excepto las cookies necesarias que siempre se otorgan)
+    gtag('consent', 'default', {
+      'ad_storage': 'denied',
+      'analytics_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'functionality_storage': 'granted',  // Necesarias - siempre otorgadas
+      'personalization_storage': 'denied',
+      'security_storage': 'granted',         // Necesarias - siempre otorgadas
+      'wait_for_update': 500
+    });
+    </script>
+    
+    <!-- 3. Google Tag Manager (opcional) -->
+    <!-- Coloca aquí tu código de GTM si lo usas -->
 </head>
 <body>
     <!-- Tu contenido aquí -->
     
-    <!-- 2. Configuración personalizada (opcional) -->
+    <!-- 4. Configuración personalizada del banner (opcional) -->
     <script src="src/config.js"></script>
     
-    <!-- 3. Banner principal -->
+    <!-- 5. Banner principal -->
     <script src="dist/consent-banner.js"></script>
 </body>
 </html>
 ```
+
+**📌 Importante:** El bloque de configuración de consent (paso 2) debe ir en el `<head>`, **ANTES** de que se cargue Google Tag Manager o cualquier otro script de tracking. Esto asegura que el consent mode se inicialice correctamente antes de que GTM comience a funcionar.
 
 ### Implementación con Configuración Personalizada
 
@@ -104,7 +127,18 @@ El archivo `src/config.js` permite personalizar completamente el banner. Si no s
     text: "We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.",
     image: "./img/cookie_100.png",
     iconPosition: "left",
-    showMinimizedIcon: true
+    showMinimizedIcon: true,
+    labels: {
+        necessary: "Necessary",
+        preferences: "Preferences",
+        statistics: "Statistics",
+        marketing: "Marketing"
+    },
+    buttonTexts: {
+        denyAll: "Deny All",
+        allowSelection: "Allow Selection",
+        allowAll: "Allow All"
+    }
 }
 ```
 
@@ -146,7 +180,7 @@ colors: {
 ```javascript
 fontSizes: {
     bannerText: "16px",    // Texto principal
-    optionText: "15px",    // Opciones (Necessary, Preferences, etc.)
+    optionText: "15px",    // Opciones (Necesarias, Preferencias, etc.)
     buttonText: "14px"     // Botones
 }
 ```
@@ -160,6 +194,21 @@ image: "./img/cookie_100.png"  // Ruta de la imagen del banner (se muestra a 50p
 ```javascript
 iconPosition: "left",        // "left" o "right"
 showMinimizedIcon: true      // true o false
+```
+
+### 📝 Textos Personalizables de Categorías y Botones
+```javascript
+labels: {
+    necessary: "Necessary",      // Etiqueta para cookies necesarias
+    preferences: "Preferences",  // Etiqueta para cookies de preferencias
+    statistics: "Statistics",    // Etiqueta para cookies de estadísticas
+    marketing: "Marketing"       // Etiqueta para cookies de marketing
+},
+buttonTexts: {
+    denyAll: "Deny All",                    // Texto del botón rechazar todo
+    allowSelection: "Allow Selection",      // Texto del botón permitir selección
+    allowAll: "Allow All"                   // Texto del botón permitir todo
+}
 ```
 
 ---
@@ -178,20 +227,17 @@ showMinimizedIcon: true      // true o false
 - **Allow All** - Acepta todas las cookies
 
 ### Integración con Google Tag Manager
-El banner envía automáticamente eventos al dataLayer y se actualiza en tiempo real cuando el usuario cambia las preferencias:
+El banner envía automáticamente eventos de consentimiento usando Google Consent Mode y se actualiza en tiempo real cuando el usuario cambia las preferencias. Los eventos aparecen en GTM como **"Consent Update"**:
 
 ```javascript
-window.dataLayer.push({
-    event: "gtm_consent_update",
-    consents: {
-        functionality_storage: "granted" | "denied",
-        personalization_storage: "granted" | "denied",
-        analytics_storage: "granted" | "denied",
-        ad_storage: "granted" | "denied",
-        ad_personalization: "granted" | "denied",
-        ad_user_data: "granted" | "denied",
-        security_storage: "granted" | "denied"
-    }
+gtag('consent', 'update', {
+    functionality_storage: "granted" | "denied",
+    personalization_storage: "granted" | "denied",
+    analytics_storage: "granted" | "denied",
+    ad_storage: "granted" | "denied",
+    ad_personalization: "granted" | "denied",
+    ad_user_data: "granted" | "denied",
+    security_storage: "granted" | "denied"
 });
 ```
 
@@ -304,9 +350,11 @@ El banner se adapta automáticamente a diferentes tamaños de pantalla:
 3. Asegúrate de que el navegador soporta CSS Variables
 
 ### GTM no recibe los eventos
-1. Verifica que `window.dataLayer` existe
-2. Revisa la consola del navegador para errores
-3. Asegúrate de que GTM está configurado para escuchar `gtm_consent_update`
+1. **Asegúrate de incluir el bloque de consent en el `<head>`** - El bloque con `gtag('consent', 'default', {...})` es necesario y debe estar ANTES de GTM
+2. Verifica que `window.dataLayer` existe en la consola del navegador
+3. Revisa la consola del navegador para errores
+4. Asegúrate de que GTM está configurado para escuchar el evento **"Consent Update"**
+5. El orden correcto en el `<head>` debe ser: CSS → Bloque de consent → GTM
 
 ---
 
